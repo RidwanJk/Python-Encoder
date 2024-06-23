@@ -3,25 +3,23 @@ from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QLineEdit, QPush
 
 def encode(text):
     lst = []
-    for str in text:
-        lst.append(str)
+    for ch in text:
+        lst.append(ch)
     for i in range(len(lst)):
         lst[i] = chr(ord(lst[i]) + 1)
     encoded = "".join(lst)
     return encoded
         
-    
-    
 def decode(text):
     lst = []
-    for str in text:
-        lst.append(str)
+    for ch in text:
+        lst.append(ch)
     for i in range(len(lst)):
         lst[i] = chr(ord(lst[i]) - 1)
     decoded = "".join(lst)
     return decoded
     
-class window(QWidget):
+class Window(QWidget):
     def __init__(self):
         super().__init__()        
 
@@ -40,6 +38,9 @@ class window(QWidget):
         self.button_decode.clicked.connect(self.on_button_click)
         layout.addWidget(self.button_decode)
         
+        self.resultLabel = QLabel("", self)
+        layout.addWidget(self.resultLabel)
+        
         self.setLayout(layout)        
         self.oldPos = self.pos()
         
@@ -57,18 +58,18 @@ class window(QWidget):
             self.oldPos = event.globalPosition()
             super().mouseMoveEvent(event)
             
-    def on_button_click(self):        
+    def on_button_click(self):
+        input_text = self.Encode_or_decode.text()
         if self.sender() == self.button_encode:
-            encode(self.Encode_or_decode())
-            
+            result = encode(input_text)
         else:
-            decode(self.Encode_or_decode())
+            result = decode(input_text)
         
-                
+        self.resultLabel.setText(result)
 
 def main():
     app = QApplication([])
-    win = window()
+    win = Window()
     win.show()
     app.exec()
     
